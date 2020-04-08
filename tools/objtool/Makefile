@@ -7,8 +7,21 @@ ARCH := x86
 endif
 
 # always use the host compiler
+<<<<<<< HEAD
 HOSTCC	?= gcc
 HOSTLD	?= ld
+=======
+ifneq ($(LLVM),)
+HOSTAR	?= llvm-ar
+HOSTCC	?= clang
+HOSTLD	?= ld.lld
+else
+HOSTAR	?= ar
+HOSTCC	?= gcc
+HOSTLD	?= ld
+endif
+AR	 = $(HOSTAR)
+>>>>>>> 1434b2bce... kbuild: support LLVM=1 to switch the default tools to Clang/LLVM
 CC	 = $(HOSTCC)
 LD	 = $(HOSTLD)
 AR	 = ar
