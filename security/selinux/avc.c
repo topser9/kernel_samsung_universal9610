@@ -551,8 +551,10 @@ out:
 static struct avc_node *avc_alloc_node(void)
 {
 	struct avc_node *node;
-
-	node = kmem_cache_zalloc(avc_node_cachep, GFP_NOWAIT);
+//[SEC_SELINUX_PORTING_COMMON
+// P191014-03912 - memory issue
+	node = kmem_cache_zalloc(avc_node_cachep, GFP_NOWAIT | __GFP_NOWARN);
+//]SEC_SELINUX_PORTING_COMMON
 	if (!node)
 		goto out;
 
@@ -1046,7 +1048,7 @@ static noinline int avc_denied(u32 ssid, u32 tsid,
 	}
 #endif
 
-#ifdef CONFIG_ALWAYS_ENFORCE
+#ifdef CONFIG_SECURITY_SELINUX_ALWAYS_ENFORCE
 	if (!(avd->flags & AVD_FLAGS_PERMISSIVE))
 #else
 	if (selinux_enforcing && !(avd->flags & AVD_FLAGS_PERMISSIVE))
